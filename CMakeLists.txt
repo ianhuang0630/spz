@@ -71,3 +71,21 @@ install(EXPORT spzTargets
   NAMESPACE spz::
   DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/spz"
 )
+
+# Add after the existing spz library target
+
+# Find pybind11
+find_package(pybind11 REQUIRED)
+
+# Create Python module
+pybind11_add_module(spz_python src/python/spz_bindings.cpp)
+
+# Link against the spz library
+target_link_libraries(spz_python PRIVATE spz::spz)
+
+# Set the output name
+set_target_properties(spz_python PROPERTIES 
+    OUTPUT_NAME "spz"
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
